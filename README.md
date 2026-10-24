@@ -228,6 +228,15 @@ Valores en viviendas vendidas por municipio en el cuarto trimestre de 2025 para 
 
 ## Actividad extra: publicación en GitHub
 
-Este repositorio publica el informe en Markdown y los tres gráficos que lo acompañan. Los datos y el proyecto de RStudio se entregan al profesor en el ZIP de la práctica.
+Este repositorio publica el informe en Markdown, sus tres gráficos y el código de R. El CSV original se incluye en el ZIP entregado al profesor.
+
+## Código y ejecución
+
+- [Código del análisis](analisis.R).
+- [Proyecto de RStudio](PL1.Rproj).
+- [Instrucciones y relación con las prácticas 1, 2 y 3](LEEME.md).
+
+Para ejecutarlo, descargar los archivos, colocar el CSV `transacciones_vivienda_municipios_2025_T4.csv` junto a `PL1.Rproj`, abrir el proyecto en RStudio y ejecutar `analisis.R`. No es necesario instalar paquetes. Se generan las tablas y los gráficos en la carpeta `resultados`.
 
 Publicado como actividad extra de PL1 en [GitHub](https://github.com/hug151/PL1-estadistica-viviendas-2025).
+
