@@ -2,9 +2,9 @@
 
 **Autor:** Hugo Abellán Lopez  
 **Asignatura:** Estadística · Práctica de laboratorio PL1  
-**Fecha:** 19 de octubre de 2026
+**Fecha:** 24 de octubre de 2026
 
-Comparación entre vivienda nueva y de segunda mano. Informe en Markdown preparado para su publicación en GitHub como actividad extra de PL1.
+Comparación entre vivienda nueva y de segunda mano. Informe en Markdown publicado en GitHub como actividad extra de PL1.
 
 ## 1. Introducción
 
@@ -24,11 +24,11 @@ El estudio se limita al archivo facilitado para 2025-T4. **Antes de realizar cua
 
 ### 2.1 Origen de los datos
 
-Se utiliza `transacciones_vivienda_municipios_2025_T4.csv`, selección facilitada para la práctica. El conjunto oficial es [Transacciones inmobiliarias de vivienda nueva y de segunda mano, por municipio. Comunidad de Madrid](https://datos.comunidad.madrid/dataset/transacciones_vivienda_nueva_usada_municipio). Esa página permite descargar los datos originales y señala como fuente la Estadística de Transacciones Inmobiliarias. El catálogo puede actualizarse; los cálculos reproducen el archivo incluido en este proyecto.
+Se utiliza `transacciones_vivienda_municipios_2025_T4.csv`, selección facilitada para la práctica. El conjunto oficial es [Transacciones inmobiliarias de vivienda nueva y de segunda mano, por municipio. Comunidad de Madrid](https://datos.comunidad.madrid/dataset/transacciones_vivienda_nueva_usada_municipio). Esa página permite descargar los datos originales y señala como fuente la Estadística de Transacciones Inmobiliarias. El catálogo puede actualizarse; los cálculos reproducen el archivo incluido en el proyecto de RStudio que se entrega con la práctica.
 
 ### 2.2 Herramientas
 
-Se utiliza R 4.6.1 con funciones de R base, sin instalar paquetes. El proyecto puede abrirse en RStudio. Se ha empleado asistencia de inteligencia artificial para preparar el código, posteriormente ejecutado y comprobado. El código se encuentra en `analisis.R`, separado del informe.
+Se utiliza R 4.6.1 con funciones de R base, sin instalar paquetes. El proyecto puede abrirse en RStudio. Se ha empleado asistencia de inteligencia artificial para preparar el código, posteriormente ejecutado y comprobado. El código se entrega en `analisis.R`, separado del informe. Sigue los procedimientos de las prácticas 1, 2 y 3: lectura y filtros, medidas descriptivas y comparación por grupos con `tapply`.
 
 ### 2.3 Diseño
 
@@ -66,6 +66,7 @@ La tabla 2 presenta centralización, dispersión, localización y forma para Tod
 | Suma (viviendas) | 21188 | 19677 | 1511 |
 | Media (v) | 88,65 | 118,54 | 20,70 |
 | Mediana (v) | 13,00 | 21,50 | 4,00 |
+| Moda (v) | 1,00 | 3,00 | 1,00 |
 | Mínimo (v) | 1,00 | 1,00 | 1,00 |
 | Máximo (v) | 10.344,00 | 10.344,00 | 310,00 |
 | Rango (v) | 10.343,00 | 10.343,00 | 309,00 |
@@ -73,16 +74,16 @@ La tabla 2 presenta centralización, dispersión, localización y forma para Tod
 | Desviación típica (v) | 671,62 | 804,18 | 47,64 |
 | Coeficiente de variación | 7,58 | 6,78 | 2,30 |
 | Primer cuartil (v) | 4,00 | 7,00 | 1,00 |
-| Tercer cuartil (v) | 38,00 | 54,25 | 19,00 |
-| Rango intercuartílico (v) | 34,00 | 47,25 | 18,00 |
-| Asimetría de Fisher | 14,99 | 12,50 | 4,17 |
-| Exceso de curtosis | 226,38 | 156,39 | 19,61 |
+| Tercer cuartil (v) | 38,00 | 55,00 | 19,00 |
+| Rango intercuartílico (v) | 34,00 | 48,00 | 18,00 |
+| Asimetría | 14,90 | 12,39 | 4,08 |
+| Exceso de curtosis | 224,46 | 154,47 | 18,99 |
 | Inferiores a la media | 207 (86,61%) | 143 (86,14%) | 55 (75,34%) |
 | Superiores a la media | 32 (13,39%) | 23 (13,86%) | 18 (24,66%) |
 
 **Unidades:** v = viviendas vendidas por municipio en el cuarto trimestre de 2025 para el tipo correspondiente. La varianza tiene esa unidad al cuadrado. CV, asimetría y curtosis no tienen unidades. No hay valores iguales a la media.
 
-La varianza y la desviación típica usan n−1. Los cuartiles usan el método tipo 7 de R. Los momentos centrales se definen como mₖ = Σ(xᵢ − media)ᵏ/n; se calcula asimetría = m₃/m₂^(3/2) y exceso de curtosis = m₄/m₂² − 3, sin corrección de sesgo y en la escala original. La moda es 1 en Todos, 3 en segunda mano y 1 en vivienda nueva, en viviendas vendidas por municipio en 2025-T4.
+La varianza y la desviación típica usan n-1. Los cuartiles y el rango intercuartílico se calculan con **tipo 2**, siguiendo la práctica 2. Para las medidas de forma se usan las funciones definidas en esa práctica: asimetría = media de (x - media)^3 / s^3; exceso de curtosis = media de (x - media)^4 / s^4 - 3, donde s es la desviación típica muestral. Son equivalentes al tipo 3 de `e1071`, sin necesidad de instalar ese paquete. Todos los cálculos se realizan sobre los valores originales.
 
 ### 3.3 Tablas de contingencia
 
@@ -126,7 +127,7 @@ La figura 2 muestra histogramas y diagramas de caja para Todos y cada tipo.
 
 **Figura 2. Histogramas y diagramas de caja de las ventas, total y por tipo.**
 
-Los histogramas representan log10 de las ventas: 0 equivale a 1 vivienda, 1 a 10, 2 a 100, 3 a 1.000 y 4 a 10.000. Las cajas utilizan eje vertical logarítmico. La línea negra marca la mediana y la roja discontinua la media, transformada únicamente para situarla en el gráfico. Los bigotes siguen la regla de 1,5 veces el rango intercuartílico en los datos originales. Los atípicos se conservan. Las medidas de la tabla 2 se calculan en la escala original.
+Los histogramas y diagramas de caja muestran el número original de viviendas vendidas, sin aplicar logaritmos. Cada panel tiene su propia escala; deben leerse sus ejes antes de comparar. La línea negra indica la mediana y la roja discontinua la media. El máximo de segunda mano comprime visualmente los valores pequeños; la tabla 2 y la figura 3 permiten completar la comparación. Los diagramas de caja usan las bisagras de Tukey que aplica `boxplot` de R, que pueden diferir ligeramente de los cuartiles de tipo 2 de la tabla. Los puntos fuera de los bigotes son atípicos según la regla del diagrama, pero se mantienen en todos los cálculos.
 
 La figura 3 compara los porcentajes de las categorías de la tabla 4 dentro de cada muestra.
 
@@ -142,9 +143,9 @@ La tabla 1 y la figura 1 muestran que el 69,46% de los 239 registros positivos c
 
 Según la tabla 2, Todos tiene una media de 88,65 viviendas vendidas por municipio y tipo en 2025-T4 y una mediana de 13,00 viviendas vendidas por municipio y tipo en ese trimestre. La media de segunda mano es de 118,54 viviendas vendidas por municipio, frente a 20,70 viviendas nuevas vendidas por municipio, siempre en el cuarto trimestre de 2025. Las medianas respectivas son 21,50 y 4,00 viviendas vendidas por municipio en dicho trimestre. La segunda mano presenta valores mayores con ambas medidas.
 
-La tabla 2 y la figura 2 reflejan gran dispersión. La desviación típica es de 804,18 viviendas de segunda mano vendidas por municipio en 2025-T4, frente a 47,64 viviendas nuevas vendidas por municipio en ese trimestre. Los CV son 6,78 y 2,30: la segunda mano también tiene mayor dispersión relativa. Sus cuartiles van de 7,00 a 54,25 viviendas de segunda mano vendidas por municipio en 2025-T4; en vivienda nueva van de 1,00 a 19,00 viviendas nuevas vendidas por municipio en ese trimestre.
+La tabla 2 y la figura 2 reflejan gran dispersión. La desviación típica es de 804,18 viviendas de segunda mano vendidas por municipio en 2025-T4, frente a 47,64 viviendas nuevas vendidas por municipio en ese trimestre. Los CV son 6,78 y 2,30: la segunda mano también tiene mayor dispersión relativa. Sus cuartiles van de 7,00 a 55,00 viviendas de segunda mano vendidas por municipio en 2025-T4; en vivienda nueva van de 1,00 a 19,00 viviendas nuevas vendidas por municipio en ese trimestre.
 
-La asimetría es positiva en Todos (14,99), segunda mano (12,50) y vivienda nueva (4,17), como indica la tabla 2. La figura 2 muestra valores altos aislados. El máximo es de 10.344 viviendas de segunda mano vendidas en un municipio en 2025-T4, frente a 310 viviendas nuevas vendidas en un municipio en ese trimestre. El exceso de curtosis es elevado: 226,38 en Todos, 156,39 en segunda mano y 19,61 en vivienda nueva. Refleja el peso de los extremos; la forma en escala original no debe deducirse de la apariencia de los histogramas transformados.
+La asimetría es positiva en Todos (14,90), segunda mano (12,39) y vivienda nueva (4,08), como indica la tabla 2. La figura 2 muestra valores altos aislados. El máximo es de 10.344 viviendas de segunda mano vendidas en un municipio en 2025-T4, frente a 310 viviendas nuevas vendidas en un municipio en ese trimestre. El exceso de curtosis es elevado: 224,46 en Todos, 154,47 en segunda mano y 18,99 en vivienda nueva. Refleja el peso de los extremos; los histogramas se representan en la escala original y muestran la concentración de las ventas en los intervalos bajos.
 
 La tabla 2 muestra que 143 registros de segunda mano (86,14%) y 55 de vivienda nueva (75,34%) quedan por debajo de la media de su grupo. La mediana permite describir el centro con menor influencia de los municipios con más ventas.
 
@@ -158,7 +159,10 @@ Entre los registros positivos de la Comunidad de Madrid, la segunda mano present
 
 ## 6. Referencias
 
-- Comunidad de Madrid. (s. f.). *Transacciones inmobiliarias de vivienda nueva y de segunda mano, por municipio. Comunidad de Madrid* [Conjunto de datos]. [Catálogo y descarga](https://datos.comunidad.madrid/dataset/transacciones_vivienda_nueva_usada_municipio). Consulta: 19 de octubre de 2026.
+- Comunidad de Madrid. (s. f.). *Transacciones inmobiliarias de vivienda nueva y de segunda mano, por municipio. Comunidad de Madrid* [Conjunto de datos]. [Catálogo y descarga](https://datos.comunidad.madrid/dataset/transacciones_vivienda_nueva_usada_municipio). Consulta: 24 de octubre de 2026.
+- Hilera, J. R. (2026). [Práctica 1: Introducción a R y RStudio](https://hilera.web.uah.es/estadistica/r/p1/index.html).
+- Hilera, J. R. (2026). [Práctica 2: Estadística descriptiva con una variable](https://hilera.web.uah.es/estadistica/r/p2/p2.pdf).
+- Hilera, J. R. (2026). [Práctica 3: Estadística descriptiva con dos variables](https://hilera.web.uah.es/estadistica/r/p3/p3.pdf).
 - Hilera, J. R. (2026). *Práctica 4: Informe de estadística descriptiva* [Material docente, p4.pdf]. CC-BY.
 - Universidad de Alcalá. (s. f.). *PL1: Informe de estadística descriptiva* [Enunciado facilitado, PL1.pdf].
 
@@ -222,7 +226,7 @@ Valores en viviendas vendidas por municipio en el cuarto trimestre de 2025 para 
   310
 ```
 
-## Archivos y publicación
+## Actividad extra: publicación en GitHub
 
 Este repositorio publica el informe en Markdown y los tres gráficos que lo acompañan. Los datos y el proyecto de RStudio se entregan al profesor en el ZIP de la práctica.
 
